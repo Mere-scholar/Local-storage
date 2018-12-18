@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>使用JSON对象储存数据</title>
+	</head>
+	<body>
+		<h3>使用JSON对象储存数据</h3>
+		<h4>填写待存取信息到表格中去</h4>
+		<table>
+			<tr><td>用户名：</td><td><input type="text" id="user"></td></tr>
+			<tr><td>E-mail：</td><td><input type="text" id="email"></td></tr>
+			<tr><td>联系电话：</td><td><input type="text" id="phone"></td></tr>
+			<tr><td></td><td><input type="button" value="保存" onclick="saveStorage()"></td></tr>
+		</table>
+		<hr>
+		<h4>检索已经存入localStorage的json对象，并且展示原始的信息</h4>
+		<p>
+			<input type="text" id="find" />
+			<input type="button" value="检索" onclick="findStorage('msg')">
+		</p>
+		<!-- 下面这块用于被显示被检索到的信息 -->
+		<p id="msg"></p>
+	</body>
+	<script type="text/javascript">
+		function saveStorage () {	//创建一个js对象,用来存放从当前表格中获取的值
+			var data = new Object;	//将对象的属性值名依次和用户输入的属性值关联起来
+			data.user = document.querySelector('#user').value;
+			data.email = document.querySelector('#email').value;
+			data.tel = document.querySelector('#phone').value;
+			// 创建一个JSON对象,让其对应的html文件中创建的对象的字符串数据形式
+			var str = JSON.stringify(data)
+			// console.log(str);
+			// 将json对象存放到localStroage上,key为用户输入的NAME,value为这个json字符串
+			localStorage.setItem(data.user,str);
+			console.log("数据已经保存！被保存的用户名为："+data.user);
+		}
+		
+		// 创建一个函数,通过用户输入的名称来检索localStroage中对应的json字符串,然后将字符串解析为一组信息,打印到制定的位置
+		function findStorage(id){	//获取用户的输入,是用户希望检索的名字
+			var requirePersonName = document.querySelector('#find').value;
+			// 通过用户输入的名字查找json字符串
+			var str = localStorage.getItem(requirePersonName);
+			// 将json对象解析为字符串的格式
+			var data = JSON.parse(str);
+			// 从对象中将相关属性的值取出来,然后构造html内容
+			var result = "用户名：" + data.user + '<br>';
+			result += "Email：" + data.email + '<br>';
+			result += "联系电话：" + data.tel + '<br>';
+			var target = document.querySelector("#msg");
+			target.innerHTML = result;
+			
+		}
+		
+		
+		
+		
+	</script>
+</html>

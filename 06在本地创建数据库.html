@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<button onclick="del()">删除数据库</button>
+		<script type="text/javascript">
+			// 创建一个本地的数据库
+			var db = openDatabase('mydb' , '0.1' , 'A list of to items.' , 20000);
+			// 使用transaction方法处理事件
+			db.transaction(function (tx){
+				// 使用executeSql执行查询 -- 插入数据
+				tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (id unique , log)');
+				tx.executeSql('INSERT INTO LOGS (id , log) VALUES (1 , "菜鸟教程")');
+				tx.executeSql('INSERT INTO LOGS (id , log) VALUES (2 , "WEB SQL")');
+			});
+			db.transaction(function (tx) {
+				tx.executeSql('DELETE FROM LOGS WHERE 1');
+			})
+		</script>
+	</body>
+</html>

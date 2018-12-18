@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<button onclick="del()">清空sessionStorage</button>
+		<script type="text/javascript">
+			console.log(window['localStroage']);
+			sessionStorage.age = "18";
+			sessionStorage.name = "努力过好每一天";
+			document.write(sessionStorage.name+"      ");	
+		</script>
+		<script type="text/javascript">
+			// session 创建的时候,记录访问次数,但是初始的值不会改变
+			if(sessionStorage.count){
+				sessionStorage.count=Number(sessionStorage.count) + 1;
+			}else{
+				sessionStorage.count=1;
+			}
+			document.write("您访问该网站的次数为：" + sessionStorage.count);
+			function del () {
+				// 只会删除当前会话中的记录
+				sessionStorage.clear()
+			}
+		</script>
+	</body>
+</html>

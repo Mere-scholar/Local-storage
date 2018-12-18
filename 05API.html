@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<button onclick="removeItem()">removeItem</button>
+		<button onclick="clearItem()">clear</button>
+		
+		<script type="text/javascript">
+			// localStorage
+			localStorage.setItem("name" , "小明");	//设置localStorage
+			localStorage.setItem("age" , 18);
+			console.log(localStorage.getItem("name","value"));	//读取localStorage
+			function removeItem () {
+				localStorage.removeItem("name");	//删除单个数据
+			}
+			function clearItem () {
+				localStorage.clear();	//删除同源的所有储存(多个数据)
+			}
+			console.log(localStorage.key(0));	//得到某个索引的key值
+		</script>
+	</body>
+</html>

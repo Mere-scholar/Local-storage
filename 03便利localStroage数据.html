@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+// 			function showInfo(){
+// 				var array = new Array();
+// 				for (var i = 0;i<array.length;i++) {
+// 					var getKey = localStorage.key(i);
+// 					var getVal = localStorage.getItem(getKey);
+// 					array = getVal.split(",");
+// 				}
+// 			}
+			var storage = window.localStorage;
+			for(var i = 0;i<storage.length;i++){
+				var key = storage.key(i);
+				var value = storage.getItem(key);
+				console.log(key + "=" + value);
+			}
+		</script>
+	</body>
+</html>

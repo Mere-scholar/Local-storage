@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body onload="init()">
+		<h1>web留言板</h1>
+		<table>
+			<tr><td>用户名</td><td><input type="text" placeholder="请输入用户名" id="user" name="user"></td></tr>
+			<tr><td>留言</td><td><textarea rows="5" cols="50" id="memo" name="memo"></textarea></td></tr>
+			<tr><td></td><td><input type="submit" value="提交" onclick="saveData()"></td></tr>
+		</table>
+		<hr>
+		<table id="datatable" border="1"></table>
+		<p id="msg"></p>
+		<div onclick="del()" style="width: 100px;height: 30px;background-color: #333;text-align: center;line-height: 30px;color: #fff;cursor: pointer;">删除数据</div>
+	</body>
+	<script type="text/javascript">
+		// 创建一个数据库用来接受用户的留言
+		var datatable = null;
+		var db = openDatabase('msgBoard','0.1','这是留言板',20000);
+		function init () {
+			datatable = document.querySelector("#datatable");
+			showAllData();
+		}
+		function removeAllData () {
+			for (var i = datatable.childNodes.length - 1;i >= 0;i--) {
+				datatable.removeChild(datatable.childNodes[i]);
+			}
+			var tr = document.createElement('tr');
+			var tr1 = document.createElement('th');
+			var tr2 = document.createElement('th');
+			var tr3 = document.createElement('th');
+			tr1.innerHTML = "用户名";
+			tr2.innerHTML = "留言";
+			tr3.innerHTML = "时间";
+			tr.appendChild(tr1);
+			tr.appendChild(tr2);
+			tr.appendChild(tr3);
+			datatable.appendChild(tr);
+		}
+		function showAllData () {
+			db.transaction(function (tx) {
+				tx.executeSql('create table if not exists MsgData(name,message,time)',[]);
+				tx.executeSql('select * from MsgData' , [] , function (tx,rs) {
+					removeAllData();
+					for (var i = 0;i<rs.rows.length;i++) {
+						showData(rs.rows.item(i));
+					}
+				})
+			})
+		}
+		function showData (row) {
+			var tr = document.createElement('tr');
+			var td1 = document.createElement('td');
+			td1.innerHTML = row.name;
+			var td2 = document.createElement('td');
+			td2.innerHTML = row.message;
+			var td3 = document.createElement('td');
+			var t = new Date();
+			t.setTime(row.time);
+			// console.log(t.setTime(row.time))
+			td3.innerHTML = t.toLocaleString();
+			tr.appendChild(td1);
+			tr.appendChild(td2);
+			tr.appendChild(td3);
+			datatable.appendChild(tr);
+		}
+		function addData (name,message,time) {
+			db.transaction(function (tx) {
+				tx.executeSql('insert into MsgData values(?,?,?)' ,[name,message,time],
+				function (tx,rs) {
+					alert("提交成功");
+					document.querySelector("#user").value = "";
+					document.querySelector("#memo").value = "";
+				},function (tx,error) {
+					alert("error.source+'::'+error.message");
+					document.querySelector("#user").value = "";
+					document.querySelector("#memo").value = "";
+				})
+			});
+		}
+		function saveData () {
+			var name = document.querySelector("#user").value;
+			var memo = document.querySelector("#memo").value;
+			var time = new Date().getTime();
+			addData(name,memo,time);
+			showAllData();
+		}
+		function del () {
+			db.transaction(function (tx) {
+				tx.executeSql('delete from MsgData WHERE 1');
+			})
+		}
+	</script>
+</html>

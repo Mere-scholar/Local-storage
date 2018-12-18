@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<button onclick="del()">清空localStroage</button>
+		<script type="text/javascript">
+			localStorage.name = "使用localStroage创建一个对象";
+			document.write(localStorage.name);
+			// localStroage之后记录访问次数时,初始值会跟着改变
+			if(localStorage.count){
+				localStorage.count++;
+			}else{
+				localStorage.count = 1;
+			}
+			document.write("访问网站的次数为："+localStorage.count);
+			function del () {
+				// 会删除整个localStroage中的值
+				localStorage.clear()
+			}
+		</script>
+	</body>
+</html>
